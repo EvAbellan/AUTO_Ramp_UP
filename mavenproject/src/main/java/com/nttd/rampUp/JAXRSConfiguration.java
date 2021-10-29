@@ -1,4 +1,6 @@
-package virtual.busisness;
+package com.nttd.rampUp;
+
+
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -9,7 +11,8 @@ import javax.ws.rs.core.Application;
  *
  * @author airhacks.com
  */
-@ApplicationPath("resources")
+@ApplicationPath("api/v1")
 public class JAXRSConfiguration extends Application {
+	
 
 }
