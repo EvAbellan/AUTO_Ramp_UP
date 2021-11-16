@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-/**
+/** Represents a Car
  * @author pabellap
  *
  */
@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Table(name = "Car")
 @NamedQuery(name ="findAll", query = "SELECT c FROM Car c")
 public class Car {
-
+	
 	@Id
 	@GeneratedValue
 	@Column(name ="id")
@@ -39,7 +39,7 @@ public class Car {
 	 * @param brand
 	 * @param country
 	 */
-	public Car(int id, String brand, String country) {
+	public Car(long id, String brand, String country) {
 		this.id = id;
 		this.brand = brand;
 		this.registration = LocalDate.now();
@@ -67,7 +67,7 @@ public class Car {
 	/**
 	 * @param id
 	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.lastUpdate = LocalDate.now();
 		this.id = id;
 	}

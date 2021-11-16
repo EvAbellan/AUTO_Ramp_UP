@@ -25,9 +25,110 @@
     		<artifactId>javax.persistence-api</artifactId>
     		<version>2.2</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+		<dependency>
+		    <groupId>log4j</groupId>
+		    <artifactId>log4j</artifactId>
+		    <version>1.2.17</version>
+		</dependency>
+
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-common</artifactId>
+			<version>2.22.2</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+		<dependency>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-all</artifactId>
+		    <version>1.10.19</version>
+		    <scope>test</scope>
+		</dependency>
+	<!-- https://mvnrepository.com/artifact/io.swagger/swagger-annotations -->
+	  <dependency>
+    <groupId>io.swagger</groupId>
+    <artifactId>swagger-jaxrs</artifactId>
+    <version>1.6.3</version>
+  </dependency>
+		
+		
     </dependencies>
     <build>
         <finalName>rampUp</finalName>
+    <plugins>
+    <plugin>
+      <groupId>com.googlecode.maven-download-plugin</groupId>
+      <artifactId>download-maven-plugin</artifactId>
+      <version>1.2.1</version>
+      <executions>
+        <execution>
+          <id>swagger-ui</id>
+          <phase>prepare-package</phase>
+          <goals>
+            <goal>wget</goal>
+          </goals>
+          <configuration>
+            <skipCache>false</skipCache>
+            <url>https://github.com/swagger-api/swagger-ui/archive/master.tar.gz</url>
+            <unpack>true</unpack>
+            <outputDirectory>${project.build.directory}</outputDirectory>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+    <plugin>
+      <artifactId>maven-resources-plugin</artifactId>
+      <version>2.6</version>
+      <executions>
+        <execution>
+          <id>copy-resources</id>
+          <phase>prepare-package</phase>
+          <goals>
+            <goal>copy-resources</goal>
+          </goals>
+          <configuration>
+            <outputDirectory>${project.build.directory}/${build.finalName}/docs</outputDirectory>
+            <resources>
+              <resource>
+                <directory>${project.build.directory}/swagger-ui-master/dist</directory>
+              </resource>
+            </resources>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+    <plugin>
+      <groupId>com.google.code.maven-replacer-plugin</groupId>
+      <artifactId>replacer</artifactId>
+      <executions>
+        <execution>
+          <id>replace-swagger-json-location</id>
+          <phase>prepare-package</phase>
+          <goals>
+            <goal>replace</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        <file>${project.build.directory}/rampUp/docs/index.html</file>
+        <replacements>
+          <replacement>
+            <token>https://petstore.swagger.io/v2/swagger.json</token>
+            <value>/rampUp/api/swagger.json</value>
+          </replacement>
+        </replacements>
+      </configuration>
+    </plugin>
+  </plugins>
     </build>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
